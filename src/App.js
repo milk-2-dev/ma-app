@@ -10,24 +10,43 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tasks: [
-                'Необходимо купить молоко!',
-                'Надо почистить зубы',
-                'Просто отдохнуть'
-            ]
+            task: {
+                number: '1',
+                class: 'done',
+                text: 'Необходимо купить молоко!'
+            },
+
+            task2: {
+                number: '2',
+                class: '',
+                text: 'clean your teeth'
+            }
         };
     };
 
     deleteBlock = (i) => {
+
+
         var arr = this.state.tasks;
-        arr.splice (i, 1);
+        delete arr[i];
         this.setState ({tasks: arr});
     };
 
     addTask = (text) => {
-        var arr = this.state.tasks;
-        arr.push(text);
-        this.setState ({tasks: arr});
+        var counter = 0;
+
+        for (var key in this.state) {
+            counter++;
+        }
+
+        var allTasks = this.state;
+        var lastTaskPlace = counter + 1;
+        var taskName = 'task' + lastTaskPlace
+        allTasks.taskName.number = lastTaskPlace;
+        allTasks.taskName.class = '';
+        allTasks.taskName.text = text;
+
+        this.setState ({allTasks});
 
     };
 
@@ -41,10 +60,17 @@ class App extends Component {
 
     }
 
-    eachTask = (item, i) => {
+    eachTask = (obj) => {
+        console.log(obj);
+
         return (
-            <List key={i} index={i} updateText={this.updateText} delete={this.deleteBlock}>
-                {item}
+            <List key={obj.number}
+                  index={obj.number}
+                  procesStatus={obj.class}
+                  updateText={this.updateText}
+                  delete={this.deleteBlock}>
+
+                {obj.text}
             </List>
         );
     };
@@ -54,7 +80,10 @@ class App extends Component {
             <Head/>
 
             <ul>
-                {this.state.tasks.map (this.eachTask)}
+                {/*{this.eachTask(this.state)}*/}
+                {Object.keys(this.state).map(taskParam => (
+                    this.eachTask(this.state[taskParam])
+                ))}
             </ul>
 
             <Sort/>

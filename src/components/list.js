@@ -35,7 +35,7 @@ class List extends Component {
 
     render() {
         return (
-            <li className={this.state.checkedClass}>
+            <li className={this.props.procesStatus}>
                 <span class="label">{this.props.children}</span>
                 <div class="actions">
                     <button onClick={this.chekerTask} type="button" aria-label="Undone" title="Undone" class="btn-picto">
